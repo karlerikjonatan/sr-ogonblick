@@ -13,6 +13,8 @@ Each manual run captures these pages in order:
 
 Desktop uses Chromium at 1440 × 900. Mobile uses Chromium at 390 × 844 with mobile and touch emulation, not Safari. Both use a scale factor of 1, Swedish locale, Stockholm timezone and light mode. Each page/layout gets a clean browser context.
 
+The gallery and history pages follow your system's light or dark appearance. The archived screenshots are displayed as captured.
+
 ## Setup and local usage
 
 Requires Node.js 26 LTS and npm. Install locked dependencies and Chromium:
