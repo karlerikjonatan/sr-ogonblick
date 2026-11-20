@@ -2,6 +2,186 @@
   "version": 1,
   "runs": [
     {
+      "id": "2026-11-20T07-46-09.848Z",
+      "startedAt": "2026-11-20T07:46:09.848Z",
+      "pages": [
+        {
+          "id": "poddar",
+          "title": "Poddar",
+          "url": "https://www.sverigesradio.se/poddar"
+        },
+        {
+          "id": "barn",
+          "title": "Barn",
+          "url": "https://www.sverigesradio.se/barn"
+        },
+        {
+          "id": "barn-3-8-ar",
+          "title": "Barn 3-8 år",
+          "url": "https://www.sverigesradio.se/barn/3-8-ar"
+        },
+        {
+          "id": "barn-9-13-ar",
+          "title": "Barn 9-13 år",
+          "url": "https://www.sverigesradio.se/barn/9-13-ar"
+        }
+      ],
+      "captures": [
+        {
+          "capturedAt": "2026-11-20T07:46:18.432Z",
+          "width": 1440,
+          "height": 6770,
+          "thumbnailWidth": 720,
+          "thumbnailHeight": 840,
+          "pageId": "poddar",
+          "url": "https://www.sverigesradio.se/poddar",
+          "layout": "desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "isMobile": false,
+          "hasTouch": false,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/poddar/desktop/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/poddar/desktop/2026-11-20T07-46-09.848Z.webp"
+        },
+        {
+          "capturedAt": "2026-11-20T07:46:27.879Z",
+          "width": 390,
+          "height": 7606,
+          "thumbnailWidth": 360,
+          "thumbnailHeight": 840,
+          "pageId": "poddar",
+          "url": "https://www.sverigesradio.se/poddar",
+          "layout": "mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "isMobile": true,
+          "hasTouch": true,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/poddar/mobile/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/poddar/mobile/2026-11-20T07-46-09.848Z.webp"
+        },
+        {
+          "capturedAt": "2026-11-20T07:46:37.641Z",
+          "width": 1440,
+          "height": 8290,
+          "thumbnailWidth": 720,
+          "thumbnailHeight": 840,
+          "pageId": "barn",
+          "url": "https://www.sverigesradio.se/barn",
+          "layout": "desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "isMobile": false,
+          "hasTouch": false,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/barn/desktop/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/barn/desktop/2026-11-20T07-46-09.848Z.webp"
+        },
+        {
+          "capturedAt": "2026-11-20T07:46:49.013Z",
+          "width": 390,
+          "height": 8904,
+          "thumbnailWidth": 360,
+          "thumbnailHeight": 840,
+          "pageId": "barn",
+          "url": "https://www.sverigesradio.se/barn",
+          "layout": "mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "isMobile": true,
+          "hasTouch": true,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/barn/mobile/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/barn/mobile/2026-11-20T07-46-09.848Z.webp"
+        },
+        {
+          "capturedAt": "2026-11-20T07:46:57.907Z",
+          "width": 1440,
+          "height": 7272,
+          "thumbnailWidth": 720,
+          "thumbnailHeight": 840,
+          "pageId": "barn-3-8-ar",
+          "url": "https://www.sverigesradio.se/barn/3-8-ar",
+          "layout": "desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "isMobile": false,
+          "hasTouch": false,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/barn-3-8-ar/desktop/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/barn-3-8-ar/desktop/2026-11-20T07-46-09.848Z.webp"
+        },
+        {
+          "capturedAt": "2026-11-20T07:47:07.657Z",
+          "width": 390,
+          "height": 7970,
+          "thumbnailWidth": 360,
+          "thumbnailHeight": 840,
+          "pageId": "barn-3-8-ar",
+          "url": "https://www.sverigesradio.se/barn/3-8-ar",
+          "layout": "mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "isMobile": true,
+          "hasTouch": true,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/barn-3-8-ar/mobile/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/barn-3-8-ar/mobile/2026-11-20T07-46-09.848Z.webp"
+        },
+        {
+          "capturedAt": "2026-11-20T07:47:16.485Z",
+          "width": 1440,
+          "height": 6045,
+          "thumbnailWidth": 720,
+          "thumbnailHeight": 840,
+          "pageId": "barn-9-13-ar",
+          "url": "https://www.sverigesradio.se/barn/9-13-ar",
+          "layout": "desktop",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "isMobile": false,
+          "hasTouch": false,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/barn-9-13-ar/desktop/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/barn-9-13-ar/desktop/2026-11-20T07-46-09.848Z.webp"
+        },
+        {
+          "capturedAt": "2026-11-20T07:47:25.015Z",
+          "width": 390,
+          "height": 6581,
+          "thumbnailWidth": 360,
+          "thumbnailHeight": 840,
+          "pageId": "barn-9-13-ar",
+          "url": "https://www.sverigesradio.se/barn/9-13-ar",
+          "layout": "mobile",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "isMobile": true,
+          "hasTouch": true,
+          "deviceScaleFactor": 1,
+          "image": "screenshots/barn-9-13-ar/mobile/2026-11-20T07-46-09.848Z.webp",
+          "thumbnail": "thumbnails/barn-9-13-ar/mobile/2026-11-20T07-46-09.848Z.webp"
+        }
+      ]
+    },
+    {
       "id": "2026-11-20T07-34-38.324Z",
       "startedAt": "2026-11-20T07:34:38.324Z",
       "pages": [
