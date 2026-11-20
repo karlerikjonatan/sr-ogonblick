@@ -74,7 +74,7 @@ export function renderGallery(manifest) {
   <a class="skip" href="#archive">Skip to archive</a>
   <header class="masthead">
     <h1>sr-page-snapshots</h1>
-    <p class="intro">Timestamped full-page desktop and mobile screenshots of Sveriges Radio pages, archived with GitHub Pages.</p>
+    <p class="intro">Timestamped full-page desktop and mobile screenshots of Sveriges Radio pages.</p>
     <p class="archive-summary">${runs.length} ${runs.length === 1 ? 'run' : 'runs'}</p>
   </header>
   <main id="archive">${archive || `
