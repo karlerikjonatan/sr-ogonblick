@@ -1,8 +1,8 @@
 const title = document.querySelector('#history-title');
 const status = document.querySelector('#history-status');
 const roll = document.querySelector('#history-roll');
-const utc = new Intl.DateTimeFormat('en-GB', {
-  dateStyle: 'medium', timeStyle: 'medium', timeZone: 'UTC',
+const stockholmTime = new Intl.DateTimeFormat('en-GB', {
+  dateStyle: 'medium', timeStyle: 'medium', timeZone: 'Europe/Stockholm',
 });
 
 function element(tag, text) {
@@ -12,7 +12,7 @@ function element(tag, text) {
 }
 
 function time(value) {
-  const node = element('time', utc.format(new Date(value)));
+  const node = element('time', `${stockholmTime.format(new Date(value))} Stockholm time`);
   node.dateTime = value;
   return node;
 }
@@ -26,7 +26,7 @@ function captureFigure(capture, pageTitle) {
   const link = element('a');
   link.className = `preview ${capture.layout}`;
   link.href = capture.image;
-  link.setAttribute('aria-label', `Open full ${label.toLowerCase()} screenshot of ${pageTitle}, ${utc.format(new Date(capture.capturedAt))} UTC`);
+  link.setAttribute('aria-label', `Open full ${label.toLowerCase()} screenshot of ${pageTitle}, ${stockholmTime.format(new Date(capture.capturedAt))} Stockholm time`);
   const thumbnail = element('img');
   thumbnail.alt = `${pageTitle} on ${label.toLowerCase()}`;
   thumbnail.width = capture.thumbnailWidth;

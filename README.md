@@ -49,6 +49,8 @@ docs/thumbnails/<page>/<desktop|mobile>/<UTC timestamp>.webp
 
 The manifest snapshots each run's page configuration so later configuration changes do not alter historical runs. The gallery orders runs newest first and preserves configured page order within each run.
 
+The gallery and per-page capture history display timestamps in `Europe/Stockholm` time (CET in winter, CEST in summer). The manifest, machine-readable `datetime` attributes and UTC filenames remain unchanged.
+
 All page/layout captures must succeed. Work is staged outside `docs`, validated and rendered before replacing the archive; capture failures leave the previous manifest, images and site untouched. A local exclusive `.capture.lock` prevents concurrent writers. Timestamp or filename collisions fail rather than overwrite. Run only on a clean worktree before committing all of `docs` together.
 
 After an abrupt process or machine termination, inspect `.capture.lock` and `.capture-*` directories before removing them. Ensure no capture process is running. If an interrupted directory swap left `docs` absent, restore the `previous` directory from the matching staging directory first. Never remove the only copy of an archive.

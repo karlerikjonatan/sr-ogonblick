@@ -7,7 +7,7 @@ const escape = (value) => String(value).replace(/[&<>"']/g, (character) => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
 })[character]);
 const readableTime = (value) => new Intl.DateTimeFormat('en-GB', {
-  dateStyle: 'long', timeStyle: 'medium', timeZone: 'UTC',
+  dateStyle: 'long', timeStyle: 'medium', timeZone: 'Europe/Stockholm',
 }).format(new Date(value));
 
 export function renderGallery(manifest) {
@@ -16,7 +16,7 @@ export function renderGallery(manifest) {
   const archive = runs.map((run, index) => `
     <section class="run" aria-labelledby="run-${run.id}">
       <header class="run-heading">
-        <h2 id="run-${run.id}"><time datetime="${escape(run.startedAt)}">${readableTime(run.startedAt)} UTC</time></h2>
+        <h2 id="run-${run.id}"><time datetime="${escape(run.startedAt)}">${readableTime(run.startedAt)} Stockholm time</time></h2>
         <span>${index === 0 ? 'Latest run · ' : ''}${run.captures.length} captures</span>
       </header>
       ${run.pages.map((page) => `<article class="page" aria-labelledby="${run.id}-${page.id}">
@@ -33,10 +33,10 @@ export function renderGallery(manifest) {
             const label = layout === 'desktop' ? 'Desktop' : 'Mobile';
             return `<figure>
             <figcaption><strong>${label}</strong><span>${capture.width} × ${capture.height} px</span></figcaption>
-            <a class="preview ${layout}" href="${escape(capture.image)}" aria-label="Open full ${label.toLowerCase()} screenshot of ${escape(page.title)}, ${readableTime(capture.capturedAt)} UTC">
+            <a class="preview ${layout}" href="${escape(capture.image)}" aria-label="Open full ${label.toLowerCase()} screenshot of ${escape(page.title)}, ${readableTime(capture.capturedAt)} Stockholm time">
               <img src="${escape(capture.thumbnail)}" width="${capture.thumbnailWidth}" height="${capture.thumbnailHeight}" alt="${escape(page.title)} captured on ${label.toLowerCase()}" loading="lazy" decoding="async">
             </a>
-            <p class="capture-time">Captured <time datetime="${escape(capture.capturedAt)}">${readableTime(capture.capturedAt)} UTC</time> · <a href="${escape(capture.image)}">Full image</a></p>
+            <p class="capture-time">Captured <time datetime="${escape(capture.capturedAt)}">${readableTime(capture.capturedAt)} Stockholm time</time> · <a href="${escape(capture.image)}">Full image</a></p>
           </figure>`;
           }).join('\n')}
         </div>
@@ -56,7 +56,7 @@ export function renderGallery(manifest) {
   <header class="masthead">
     <h1>SR page snapshots</h1>
     <p class="intro">Full-page snapshots, from top to bottom. Desktop and mobile, kept together.</p>
-    <div class="archive-summary"><span>${runs.length} complete ${runs.length === 1 ? 'run' : 'runs'}</span><span>All times in UTC</span><a href="captures.json">Capture manifest</a></div>
+    <div class="archive-summary"><span>${runs.length} complete ${runs.length === 1 ? 'run' : 'runs'}</span><span>All times in Stockholm (CET/CEST)</span><a href="captures.json">Capture manifest</a></div>
   </header>
   <main id="archive">${archive || `
     <section class="empty">

@@ -11,7 +11,7 @@ const base = 'https://archive.example/sr-page-snapshots/';
 const source = { id: 'poddar', title: 'Poddar', url: 'https://www.sverigesradio.se/poddar' };
 const manifest = {
   version: 1,
-  runs: ['2026-01-02T08:00:00.000Z', '2026-01-01T08:00:00.000Z'].map((startedAt) => {
+  runs: ['2026-07-01T22:30:00.000Z', '2026-01-02T23:30:00.000Z'].map((startedAt) => {
     const id = timestampId(new Date(startedAt));
     return { id, startedAt, pages: [source], captures: layouts.map(({ id: layout, ...settings }) => ({
       ...settings, pageId: source.id, url: source.url, layout, capturedAt: startedAt,
@@ -28,7 +28,7 @@ before(async () => { browser = await chromium.launch(); });
 after(async () => { await browser?.close(); });
 
 async function openPage(t, { width = 390, archive = manifest } = {}) {
-  const page = await browser.newPage({ viewport: { width, height: 844 } });
+  const page = await browser.newPage({ viewport: { width, height: 844 }, timezoneId: 'America/Los_Angeles' });
   t.after(() => page.close());
   await page.route(`${base}**`, async (route) => {
     const url = new URL(route.request().url());
@@ -58,6 +58,12 @@ test('gallery opens a page-specific roll with all dates and lazy previews linkin
   const columns = page.locator('.history-run');
   assert.deepEqual(await columns.locator('h2 time').evaluateAll((nodes) => nodes.map((node) => node.dateTime)),
     expected.map((run) => run.startedAt));
+  assert.deepEqual(await columns.locator('h2 time').allTextContents(), [
+    '2 Jul 2026, 00:30:00 Stockholm time',
+    '3 Jan 2026, 00:30:00 Stockholm time',
+  ]);
+  assert.equal(await columns.first().locator('a.preview').first().getAttribute('aria-label'),
+    'Open full desktop screenshot of Poddar, 2 Jul 2026, 00:30:00 Stockholm time');
   for (const [index, run] of expected.entries()) {
     const previews = columns.nth(index).locator('a.preview');
     const captures = ['desktop', 'mobile'].map((layout) =>

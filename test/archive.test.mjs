@@ -98,9 +98,28 @@ test('gallery orders newest runs first, preserves page order, escapes titles and
   assert.ok(html.indexOf(`id="run-${later.id}"`) < html.indexOf(`id="run-${first.id}"`));
   assert.ok(html.indexOf(`id="${later.id}-one"`) < html.indexOf(`id="${later.id}-two"`));
   assert.match(html, /One &amp; two/);
+  assert.match(html, /20 November 2026 at 09:00:00 Stockholm time/);
+  assert.match(html, /All times in Stockholm \(CET\/CEST\)/);
+  assert.match(html, /datetime="2026-11-20T08:00:00\.000Z"/);
+  assert.doesNotMatch(html, /\bUTC\b/);
   for (const capture of later.captures) {
     assert.ok(html.includes(`href="${capture.image}"`));
     assert.ok(html.includes(`src="${capture.thumbnail}"`));
   }
   assert.doesNotMatch(html, /(?:src|href)="\/(?:screenshots|thumbnails|styles)/);
+});
+
+test('gallery displays winter and summer Stockholm dates while retaining UTC datetime values', async (t) => {
+  const root = await fixture(t);
+  const winterAt = '2026-01-02T23:30:00.000Z';
+  const summerAt = '2026-07-01T22:30:00.000Z';
+  const winter = await stageRun({ root, pages, startedAt: winterAt, render: renderGallery,
+    capture: async (options) => ({ ...await fakeCapture(options), capturedAt: winterAt }) });
+  const summer = await stageRun({ root, pages, startedAt: summerAt, render: renderGallery,
+    capture: async (options) => ({ ...await fakeCapture(options), capturedAt: summerAt }) });
+  const html = renderGallery({ version: 1, runs: [winter, summer] });
+  assert.match(html, /2 July 2026 at 00:30:00 Stockholm time/);
+  assert.match(html, /3 January 2026 at 00:30:00 Stockholm time/);
+  assert.match(html, /datetime="2026-07-01T22:30:00\.000Z"/);
+  assert.match(html, /datetime="2026-01-02T23:30:00\.000Z"/);
 });
