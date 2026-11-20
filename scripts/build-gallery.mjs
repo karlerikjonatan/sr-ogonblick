@@ -69,8 +69,8 @@ export function renderGallery(manifest) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A timestamped archive of Sveriges Radio pages, captured in desktop and mobile layouts.">
-  <title>SR page snapshots</title>
+  <meta name="description" content="Timestamped full-page screenshots of Sveriges Radio pages.">
+  <title>sr-page-snapshots</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
