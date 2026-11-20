@@ -26,6 +26,8 @@ npm run capture
 
 `npm run capture` captures all pages and rebuilds `docs/index.html`. `npm run build` only validates the archive and rebuilds the HTML. Open `docs/index.html` directly or serve `docs` using any static HTTP server. All asset links are relative, including when hosted under a repository Pages subpath.
 
+Use **View capture history** next to a page to browse its desktop and mobile captures, newest first. Scroll sideways to browse and select a thumbnail to open the full image. The history view reads the capture manifest, so serve `docs` over HTTP to use it locally.
+
 ## Capture behavior and archive
 
 The tool accepts **all** cookies when a recognized consent prompt appears. It waits for the main content, a section heading, content links and images, disables animation, incrementally scrolls without clicking "show more", waits for on-page images and fonts, and requires stable page height before returning to the top. Images outside the horizontal viewport in carousels are not required because they are not rendered in the screenshot. Loading, consent, navigation and stabilization failures stop the run; timeouts and scroll counts are bounded.

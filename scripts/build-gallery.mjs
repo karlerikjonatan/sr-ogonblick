@@ -22,7 +22,10 @@ export function renderGallery(manifest) {
       ${run.pages.map((page) => `<article class="page" aria-labelledby="${run.id}-${page.id}">
         <header class="page-heading">
           <h3 id="${run.id}-${page.id}">${escape(page.title)}</h3>
-          <a class="source" href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
+          <div class="page-links">
+            <a href="history.html?page=${encodeURIComponent(page.id)}" aria-label="View capture history for ${escape(page.title)}">View capture history</a>
+            <a href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
+          </div>
         </header>
         <div class="pair">
           ${['desktop', 'mobile'].map((layout) => {
