@@ -1,4 +1,4 @@
-# SR page snapshots
+# sr-page-snapshots
 
 A one-shot Node.js tool and public static gallery for full-page Sveriges Radio screenshots. No server, scheduler, or frontend framework.
 
