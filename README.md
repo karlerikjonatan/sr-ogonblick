@@ -59,6 +59,8 @@ In repository **Settings → Pages**, choose **GitHub Actions** as the build sou
 
 After the implementation and lockfile are on the default branch, open **Actions → Capture and publish → Run workflow**, select the default branch and run it. `workflow_dispatch` is the only trigger: there are no scheduled, push, or pull-request runs.
 
+To publish the committed gallery without taking new screenshots, run **Actions → Publish existing gallery** on the default branch.
+
 The workflow uses Node 26, `npm ci`, Chromium system dependencies and the focused tests. It captures and renders all eight images, commits all of `docs` in one commit, pushes without force, then uploads `docs` and deploys using the official Pages actions. A serialized workflow group prevents capture workflows racing. If an unrelated push races with the commit, the non-fast-forward push fails and no deployment occurs; rerun from the latest default branch.
 
 Capture uses only contents-write permission; the separate deployment job uses pages-write and id-token-write. It does not rely on a bot commit triggering another workflow.

@@ -2,12 +2,26 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { after, before, test } from 'node:test';
 import { chromium } from 'playwright';
+import sharp from 'sharp';
+import { layouts, timestampId } from '../scripts/archive.mjs';
 import { renderGallery } from '../scripts/build-gallery.mjs';
 
 const docs = new URL('../docs/', import.meta.url);
 const base = 'https://archive.example/sr-page-snapshots/';
-const saved = JSON.parse(await readFile(new URL('captures.json', docs), 'utf8'));
-const manifest = { ...saved, runs: saved.runs.filter((run) => run.pages.some((page) => page.id === 'poddar')).slice(-2) };
+const source = { id: 'poddar', title: 'Poddar', url: 'https://www.sverigesradio.se/poddar' };
+const manifest = {
+  version: 1,
+  runs: ['2026-01-02T08:00:00.000Z', '2026-01-01T08:00:00.000Z'].map((startedAt) => {
+    const id = timestampId(new Date(startedAt));
+    return { id, startedAt, pages: [source], captures: layouts.map(({ id: layout, ...settings }) => ({
+      ...settings, pageId: source.id, url: source.url, layout, capturedAt: startedAt,
+      width: settings.viewport.width, height: settings.viewport.height, thumbnailWidth: 2, thumbnailHeight: 2,
+      image: `screenshots/${source.id}/${layout}/${id}.webp`,
+      thumbnail: `thumbnails/${source.id}/${layout}/${id}.webp`,
+    })) };
+  }),
+};
+const thumbnail = await sharp({ create: { width: 2, height: 2, channels: 3, background: '#ffffff' } }).webp().toBuffer();
 const types = { html: 'text/html', js: 'text/javascript', css: 'text/css', webp: 'image/webp' };
 let browser;
 before(async () => { browser = await chromium.launch(); });
@@ -23,6 +37,7 @@ async function openPage(t, { width = 390, archive = manifest } = {}) {
       return archive ? route.fulfill({ json: archive }) : route.fulfill({ status: 503 });
     }
     if (file === 'index.html') return route.fulfill({ contentType: 'text/html', body: renderGallery(manifest) });
+    if (file.startsWith('thumbnails/')) return route.fulfill({ contentType: 'image/webp', body: thumbnail });
     return route.fulfill({ contentType: types[file.split('.').at(-1)], body: await readFile(new URL(file, docs)) });
   });
   return page;
