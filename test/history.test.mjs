@@ -43,15 +43,14 @@ async function openPage(t, { width = 390, archive = manifest } = {}) {
   return page;
 }
 
-test('gallery opens a page-specific roll with all dates and lazy previews linking to full images', async (t) => {
+test('standalone history renders all dates and lazy previews linking to full images', async (t) => {
   const archive = { ...manifest, runs: [...manifest.runs].reverse() };
   const page = await openPage(t, { archive });
   const fullRequests = [];
   page.on('request', (request) => {
     if (request.url().startsWith(`${base}screenshots/`)) fullRequests.push(request.url());
   });
-  await page.goto(`${base}index.html`);
-  await page.getByRole('link', { name: 'View capture history for Poddar', exact: true }).first().click();
+  await page.goto(`${base}history.html?page=poddar`);
   await page.getByRole('heading', { name: 'Poddar capture history' }).waitFor();
   assert.equal(page.url(), `${base}history.html?page=poddar`);
   const expected = [...manifest.runs].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
@@ -82,6 +81,21 @@ test('gallery opens a page-specific roll with all dates and lazy previews linkin
   await page.keyboard.press('ArrowRight');
   await page.waitForFunction(() => document.getElementById('history-roll').scrollLeft > 0);
   assert.deepEqual(fullRequests, []);
+});
+
+test('gallery layout controls show one layout at a time for the selected page', async (t) => {
+  const page = await openPage(t);
+  await page.goto(`${base}index.html`);
+  const firstPage = page.locator('.page').first();
+  const desktop = firstPage.locator('.capture-view.desktop');
+  const mobile = firstPage.locator('.capture-view.mobile');
+
+  assert.equal(await desktop.isVisible(), true);
+  assert.equal(await mobile.isVisible(), false);
+  await firstPage.getByRole('radio', { name: 'Mobile' }).check();
+  assert.equal(await desktop.isVisible(), false);
+  assert.equal(await mobile.isVisible(), true);
+  assert.equal(await page.locator('.page').nth(1).locator('input[value="desktop"]').isChecked(), true);
 });
 
 test('history handles missing pages and unavailable manifests', async (t) => {

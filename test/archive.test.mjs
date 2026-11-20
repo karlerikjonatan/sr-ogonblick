@@ -95,13 +95,21 @@ test('gallery orders newest runs first, preserves page order, escapes titles and
   const later = await stageRun({ root, pages, startedAt: laterTime, render: renderGallery,
     capture: async (options) => ({ ...await fakeCapture(options), capturedAt: laterTime }) });
   const html = renderGallery({ version: 1, runs: [first, later] });
-  assert.ok(html.indexOf(`id="run-${later.id}"`) < html.indexOf(`id="run-${first.id}"`));
-  assert.ok(html.indexOf(`id="${later.id}-one"`) < html.indexOf(`id="${later.id}-two"`));
+  assert.ok(html.indexOf('datetime="2026-11-21T08:00:00.000Z"')
+    < html.indexOf('datetime="2026-11-20T08:00:00.000Z"'));
+  assert.ok(html.indexOf('<h2 id="page-one">') < html.indexOf('<h2 id="page-two">'));
+  assert.match(html, /href="#page-one">One &amp; two<\/a>/);
+  assert.match(html, /href="#page-two">Two<\/a>/);
   assert.match(html, /One &amp; two/);
-  assert.match(html, /20 November 2026 at 09:00:00 Stockholm time/);
-  assert.match(html, /All times in Stockholm \(CET\/CEST\)/);
+  assert.match(html, /20 November 2026 at 09:00:00/);
+  assert.doesNotMatch(html, /Stockholm time/);
+  assert.match(html, /<\/nav>\s+<p class="archive-summary">2 runs<\/p>/);
   assert.match(html, /datetime="2026-11-20T08:00:00\.000Z"/);
   assert.doesNotMatch(html, /\bUTC\b/);
+  assert.match(html, /name="layout-one" value="desktop" checked/);
+  assert.match(html, /name="layout-one" value="mobile"/);
+  assert.match(html, /class="capture-view desktop" aria-label="Desktop captures"/);
+  assert.match(html, /Earlier desktop captures/);
   for (const capture of later.captures) {
     assert.ok(html.includes(`href="${capture.image}"`));
     assert.ok(html.includes(`src="${capture.thumbnail}"`));
