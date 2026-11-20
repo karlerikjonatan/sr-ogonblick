@@ -69,15 +69,16 @@ export function renderGallery(manifest) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Timestamped full-page screenshots of Sveriges Radio pages.">
-  <title>sr-page-snapshots</title>
+  <meta name="description" content="SR Ögonblick sparar ögonblicksbilder av Sveriges Radios webbsidor.">
+  <title>SR Ögonblick</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <a class="skip" href="#archive">Skip to archive</a>
   <header class="masthead">
-    <h1>sr-page-snapshots</h1>
-    <p class="intro">Timestamped full-page screenshots of Sveriges Radio pages.</p>
+    <h1>SR Ögonblick</h1>
+    <p class="intro">SR Ögonblick sparar ögonblicksbilder av Sveriges Radios webbsidor.</p>
 ${pageNav ? `    ${pageNav}\n` : ''}    <p class="archive-summary">${runs.length} ${runs.length === 1 ? 'run' : 'runs'}</p>
   </header>
   <main id="archive">${archive || `
