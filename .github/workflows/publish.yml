@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: sr-page-snapshots-publish
+  group: sr-ogonblick-publish
   cancel-in-progress: false
 
 permissions:

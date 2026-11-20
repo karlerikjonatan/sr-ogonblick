@@ -2,7 +2,7 @@
 
 A one-shot Node.js tool and public static gallery for full-page Sveriges Radio screenshots. No server, scheduler, or frontend framework.
 
-[Open the gallery](https://karlerikjonatan.github.io/sr-page-snapshots/).
+[Open the gallery](https://karlerikjonatan.github.io/sr-ogonblick/).
 
 Each manual run captures these pages in order:
 

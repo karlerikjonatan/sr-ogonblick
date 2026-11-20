@@ -7,7 +7,7 @@ import { layouts, timestampId } from '../scripts/archive.mjs';
 import { renderGallery } from '../scripts/build-gallery.mjs';
 
 const docs = new URL('../docs/', import.meta.url);
-const base = 'https://archive.example/sr-page-snapshots/';
+const base = 'https://archive.example/sr-ogonblick/';
 const source = { id: 'poddar', title: 'Poddar', url: 'https://www.sverigesradio.se/poddar' };
 const manifest = {
   version: 1,
