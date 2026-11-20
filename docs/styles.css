@@ -16,6 +16,9 @@ a:focus-visible { outline: 3px solid #9d411e; outline-offset: 5px; }
 h1 { margin: 0 0 8px; font-weight: 650; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; letter-spacing: -.035em; }
 .intro { max-width: 550px; margin: 0; color: #4f5c64; line-height: 1.6; }
 .archive-summary { margin: 20px 0 0; color: #4f5c64; font-size: .82rem; }
+.page-nav { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 20px; font-size: .85rem; }
+.page-nav a { text-decoration: none; }
+.page-nav a:hover { text-decoration: underline; }
 .page { padding: 28px 0 36px; border-top: 1px solid #d5d9db; }
 .page-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
 h2 { font-size: 1.35rem; line-height: 1.3; margin: 0; font-weight: 650; }

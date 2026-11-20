@@ -61,6 +61,9 @@ export function renderGallery(manifest) {
   const runs = [...manifest.runs].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
   const latestRun = runs[0];
   const archive = latestRun ? latestRun.pages.map((page) => renderPage(page, runs)).join('\n') : '';
+  const pageNav = latestRun ? `<nav class="page-nav" aria-label="Pages">
+      ${latestRun.pages.map((page) => `<a href="#page-${escape(page.id)}">${escape(page.title)}</a>`).join('\n      ')}
+    </nav>` : '';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -74,9 +77,9 @@ export function renderGallery(manifest) {
   <a class="skip" href="#archive">Skip to archive</a>
   <header class="masthead">
     <h1>sr-page-snapshots</h1>
-    <p class="intro">Timestamped full-page desktop and mobile screenshots of Sveriges Radio pages.</p>
+    <p class="intro">Timestamped full-page screenshots of Sveriges Radio pages.</p>
     <p class="archive-summary">${runs.length} ${runs.length === 1 ? 'run' : 'runs'}</p>
-  </header>
+${pageNav ? `    ${pageNav}\n` : ''}  </header>
   <main id="archive">${archive || `
     <section class="empty">
       <h2>The archive starts here.</h2>
