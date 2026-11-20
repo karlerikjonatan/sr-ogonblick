@@ -26,7 +26,7 @@ npm run capture
 
 `npm run capture` captures all pages and rebuilds `docs/index.html`. `npm run build` only validates the archive and rebuilds the HTML. Open `docs/index.html` directly or serve `docs` using any static HTTP server. All asset links are relative, including when hosted under a repository Pages subpath.
 
-Use **View capture history** next to a page to browse its desktop and mobile captures, newest first. Scroll sideways to browse and select a thumbnail to open the full image. The history view reads the capture manifest, so serve `docs` over HTTP to use it locally.
+Use the **Desktop** and **Mobile** controls on each page to switch layouts. Earlier runs appear below the latest capture, newest first; select any preview to open the full image. The standalone history page remains available for existing links.
 
 ## Capture behavior and archive
 

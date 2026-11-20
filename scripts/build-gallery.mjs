@@ -10,38 +10,57 @@ const readableTime = (value) => new Intl.DateTimeFormat('en-GB', {
   dateStyle: 'long', timeStyle: 'medium', timeZone: 'Europe/Stockholm',
 }).format(new Date(value));
 
+function renderCapture(capture, page, layout, latest) {
+  const label = layout === 'desktop' ? 'Desktop' : 'Mobile';
+  return `<figure class="capture${latest ? ' latest-capture' : ''}">
+        <figcaption><time datetime="${escape(capture.capturedAt)}">${latest ? 'Latest · ' : ''}${readableTime(capture.capturedAt)}</time><span>${capture.width} × ${capture.height} px</span></figcaption>
+        <a class="preview ${layout}" href="${escape(capture.image)}" aria-label="Open full ${label.toLowerCase()} screenshot of ${escape(page.title)}, ${readableTime(capture.capturedAt)}">
+          <img src="${escape(capture.thumbnail)}" width="${capture.thumbnailWidth}" height="${capture.thumbnailHeight}" alt="${escape(page.title)} captured on ${label.toLowerCase()}" loading="lazy" decoding="async">
+        </a>
+      </figure>`;
+}
+
+function renderLayout(page, runs, layout) {
+  const label = layout === 'desktop' ? 'Desktop' : 'Mobile';
+  const captures = runs.slice(1).flatMap((run) => {
+    const capture = run.captures.find((entry) => entry.pageId === page.id && entry.layout === layout);
+    return capture ? [capture] : [];
+  });
+  const latestCapture = runs[0].captures.find((entry) => entry.pageId === page.id && entry.layout === layout);
+  return `<section class="capture-view ${layout}" aria-label="${label} captures">
+      ${renderCapture(latestCapture, page, layout, true)}
+${captures.length ? `      <ol class="previous-captures" aria-label="Earlier ${label.toLowerCase()} captures">
+        ${captures.map((capture) => `<li>${renderCapture(capture, page, layout, false)}</li>`).join('\n')}
+      </ol>
+` : ''}    </section>`;
+}
+
+function renderPage(page, runs) {
+  const pageId = escape(page.id);
+  const desktopId = `layout-${pageId}-desktop`;
+  const mobileId = `layout-${pageId}-mobile`;
+  return `<article class="page" aria-labelledby="page-${pageId}">
+      <header class="page-heading">
+        <h2 id="page-${pageId}">${escape(page.title)}</h2>
+        <a href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
+      </header>
+      <fieldset class="layout-picker">
+        <legend class="visually-hidden">Capture layout</legend>
+        <input id="${desktopId}" type="radio" name="layout-${pageId}" value="desktop" checked>
+        <label for="${desktopId}">Desktop</label>
+        <input id="${mobileId}" type="radio" name="layout-${pageId}" value="mobile">
+        <label for="${mobileId}">Mobile</label>
+        ${renderLayout(page, runs, 'desktop')}
+        ${renderLayout(page, runs, 'mobile')}
+      </fieldset>
+    </article>`;
+}
+
 export function renderGallery(manifest) {
   validateManifest(manifest);
   const runs = [...manifest.runs].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
-  const archive = runs.map((run, index) => `
-    <section class="run" aria-labelledby="run-${run.id}">
-      <header class="run-heading">
-        <h2 id="run-${run.id}"><time datetime="${escape(run.startedAt)}">${readableTime(run.startedAt)} Stockholm time</time></h2>
-        <span>${index === 0 ? 'Latest run · ' : ''}${run.captures.length} captures</span>
-      </header>
-      ${run.pages.map((page) => `<article class="page" aria-labelledby="${run.id}-${page.id}">
-        <header class="page-heading">
-          <h3 id="${run.id}-${page.id}">${escape(page.title)}</h3>
-          <div class="page-links">
-            <a href="history.html?page=${encodeURIComponent(page.id)}" aria-label="View capture history for ${escape(page.title)}">View capture history</a>
-            <a href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
-          </div>
-        </header>
-        <div class="pair">
-          ${['desktop', 'mobile'].map((layout) => {
-            const capture = run.captures.find((entry) => entry.pageId === page.id && entry.layout === layout);
-            const label = layout === 'desktop' ? 'Desktop' : 'Mobile';
-            return `<figure>
-            <figcaption><strong>${label}</strong><span>${capture.width} × ${capture.height} px</span></figcaption>
-            <a class="preview ${layout}" href="${escape(capture.image)}" aria-label="Open full ${label.toLowerCase()} screenshot of ${escape(page.title)}, ${readableTime(capture.capturedAt)} Stockholm time">
-              <img src="${escape(capture.thumbnail)}" width="${capture.thumbnailWidth}" height="${capture.thumbnailHeight}" alt="${escape(page.title)} captured on ${label.toLowerCase()}" loading="lazy" decoding="async">
-            </a>
-            <p class="capture-time">Captured <time datetime="${escape(capture.capturedAt)}">${readableTime(capture.capturedAt)} Stockholm time</time> · <a href="${escape(capture.image)}">Full image</a></p>
-          </figure>`;
-          }).join('\n')}
-        </div>
-      </article>`).join('\n')}
-    </section>`).join('\n');
+  const latestRun = runs[0];
+  const archive = latestRun ? latestRun.pages.map((page) => renderPage(page, runs)).join('\n') : '';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -54,17 +73,17 @@ export function renderGallery(manifest) {
 <body>
   <a class="skip" href="#archive">Skip to archive</a>
   <header class="masthead">
-    <h1>SR page snapshots</h1>
-    <p class="intro">Full-page snapshots, from top to bottom. Desktop and mobile, kept together.</p>
-    <div class="archive-summary"><span>${runs.length} complete ${runs.length === 1 ? 'run' : 'runs'}</span><span>All times in Stockholm (CET/CEST)</span><a href="captures.json">Capture manifest</a></div>
+    <h1>sr-page-snapshots</h1>
+    <p class="intro">Timestamped full-page desktop and mobile screenshots of Sveriges Radio pages, archived with GitHub Pages.</p>
+    <p class="archive-summary">${runs.length} ${runs.length === 1 ? 'run' : 'runs'}</p>
   </header>
   <main id="archive">${archive || `
     <section class="empty">
       <h2>The archive starts here.</h2>
-      <p>No captures yet. The first complete run will appear here with all four pages in desktop and mobile.</p>
+      <p>No captures yet. The first complete run will appear here.</p>
     </section>`}
   </main>
-  <footer>Independent screenshot archive. Source pages and their content belong to Sveriges Radio and their respective owners. Runs are added manually; this is not a live view.</footer>
+  <footer>Independent archive. Source pages and their content belong to Sveriges Radio and their respective owners. <a href="captures.json">Capture manifest</a></footer>
 </body>
 </html>
 `;

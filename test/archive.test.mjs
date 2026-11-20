@@ -99,9 +99,13 @@ test('gallery orders newest runs first, preserves page order, escapes titles and
   assert.ok(html.indexOf(`id="${later.id}-one"`) < html.indexOf(`id="${later.id}-two"`));
   assert.match(html, /One &amp; two/);
   assert.match(html, /20 November 2026 at 09:00:00 Stockholm time/);
-  assert.match(html, /All times in Stockholm \(CET\/CEST\)/);
+  assert.match(html, /<p class="archive-summary">2 runs<\/p>/);
   assert.match(html, /datetime="2026-11-20T08:00:00\.000Z"/);
   assert.doesNotMatch(html, /\bUTC\b/);
+  assert.match(html, /name="layout-one" value="desktop" checked/);
+  assert.match(html, /name="layout-one" value="mobile"/);
+  assert.match(html, /class="capture-view desktop" aria-label="Desktop captures"/);
+  assert.match(html, /Earlier desktop captures/);
   for (const capture of later.captures) {
     assert.ok(html.includes(`href="${capture.image}"`));
     assert.ok(html.includes(`src="${capture.thumbnail}"`));
