@@ -103,7 +103,7 @@ test('gallery orders newest runs first, preserves page order, escapes titles and
   assert.match(html, /One &amp; two/);
   assert.match(html, /20 November 2026 at 09:00:00/);
   assert.doesNotMatch(html, /Stockholm time/);
-  assert.match(html, /<p class="archive-summary">2 runs<\/p>/);
+  assert.match(html, /<\/nav>\s+<p class="archive-summary">2 runs<\/p>/);
   assert.match(html, /datetime="2026-11-20T08:00:00\.000Z"/);
   assert.doesNotMatch(html, /\bUTC\b/);
   assert.match(html, /name="layout-one" value="desktop" checked/);

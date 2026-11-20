@@ -78,8 +78,8 @@ export function renderGallery(manifest) {
   <header class="masthead">
     <h1>sr-page-snapshots</h1>
     <p class="intro">Timestamped full-page screenshots of Sveriges Radio pages.</p>
-    <p class="archive-summary">${runs.length} ${runs.length === 1 ? 'run' : 'runs'}</p>
-${pageNav ? `    ${pageNav}\n` : ''}  </header>
+${pageNav ? `    ${pageNav}\n` : ''}    <p class="archive-summary">${runs.length} ${runs.length === 1 ? 'run' : 'runs'}</p>
+  </header>
   <main id="archive">${archive || `
     <section class="empty">
       <h2>The archive starts here.</h2>
