@@ -86,7 +86,7 @@ ${pageNav ? `    ${pageNav}\n` : ''}  </header>
       <p>No captures yet. The first complete run will appear here.</p>
     </section>`}
   </main>
-  <footer>Independent archive. Source pages and their content belong to Sveriges Radio and their respective owners. <a href="captures.json">Capture manifest</a></footer>
+  <footer>Source pages and their content belong to Sveriges Radio and their respective owners. <a href="captures.json">Capture manifest</a></footer>
 </body>
 </html>
 `;
