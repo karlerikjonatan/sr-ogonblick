@@ -6,7 +6,7 @@
   font-synthesis: none;
 }
 * { box-sizing: border-box; }
-body { max-width: 1180px; margin: auto; padding: 0 40px; }
+body { max-width: 768px; margin: auto; padding: 0 40px; }
 a { color: #245c6b; text-underline-offset: .2em; }
 a:hover { color: #132d35; }
 a:focus-visible { outline: 3px solid #9d411e; outline-offset: 5px; }
