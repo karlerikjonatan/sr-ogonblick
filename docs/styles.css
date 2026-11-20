@@ -24,7 +24,7 @@ h2 { font-size: 1.1rem; line-height: 1.5; margin: 0; font-weight: 650; }
 .page { padding: 28px 0 40px; border-bottom: 1px solid #c8cbc5; }
 .page-heading { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; }
 h3 { margin: 0; font-size: 1.35rem; font-weight: 650; }
-.source { margin-left: auto; font-size: .8rem; }
+.page-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-left: auto; font-size: .8rem; }
 .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
 figure { margin: 0; min-width: 0; }
 figcaption { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; font-size: .8rem; }
@@ -38,6 +38,32 @@ figcaption span { color: #4f5c64; font-variant-numeric: tabular-nums; }
 .empty h2 { font-size: 1.5rem; }
 .empty p { line-height: 1.7; color: #4f5c64; }
 footer { max-width: 740px; padding: 24px 0 40px; font-size: .76rem; line-height: 1.65; color: #4f5c64; }
+.history-nav { display: inline-block; margin-bottom: 20px; font-size: .85rem; }
+.history-intro { margin: 0; color: #4f5c64; line-height: 1.5; }
+.history-status { margin: 24px 0; color: #4f5c64; }
+.history-roll {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(300px, 85%);
+  gap: 20px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  margin: 0;
+  padding: 8px 8px 20px;
+  list-style: none;
+}
+.history-roll[hidden] { display: none; }
+.history-roll:focus-visible { outline: 3px solid #9d411e; outline-offset: -3px; }
+.history-run { scroll-snap-align: start; scroll-margin-left: 8px; }
+.history-run h2 { border-bottom: 1px solid #c8cbc5; padding-bottom: 10px; }
+.history-run h2 time { font-variant-numeric: tabular-nums; }
+.history-run figure { margin-top: 16px; }
+.history-run .preview { height: 164px; }
+.history-run .preview img { height: 100%; object-fit: cover; object-position: top; }
+.history-run .preview.mobile img { width: min(100%, 140px); }
+.history-run .preview > span { display: block; padding: 16px; }
+.history-run .capture-time { margin: 6px 0 0; }
 @media (max-width: 640px) {
   body { padding: 0 20px; }
   .masthead { padding-top: 36px; }
@@ -46,6 +72,6 @@ footer { max-width: 740px; padding: 24px 0 40px; font-size: .76rem; line-height:
   .run-heading { align-items: flex-start; flex-direction: column; gap: 8px; }
   .pair { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .preview { height: 360px; }
-  .source { max-width: 90px; text-align: right; }
-  .page-heading { gap: 10px; }
+  .page-heading { flex-wrap: wrap; gap: 8px 14px; }
+  .page-links { margin-left: 0; }
 }
