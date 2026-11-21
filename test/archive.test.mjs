@@ -126,8 +126,9 @@ test('gallery displays winter and summer Stockholm dates while retaining UTC dat
   const summer = await stageRun({ root, pages, startedAt: summerAt, render: renderGallery,
     capture: async (options) => ({ ...await fakeCapture(options), capturedAt: summerAt }) });
   const html = renderGallery({ version: 1, runs: [winter, summer] });
-  assert.match(html, /2 July 2026 at 00:30:00 Stockholm time/);
-  assert.match(html, /3 January 2026 at 00:30:00 Stockholm time/);
+  assert.match(html, /2 July 2026 at 00:30:00/);
+  assert.match(html, /3 January 2026 at 00:30:00/);
+  assert.doesNotMatch(html, /Stockholm time/);
   assert.match(html, /datetime="2026-07-01T22:30:00\.000Z"/);
   assert.match(html, /datetime="2026-01-02T23:30:00\.000Z"/);
 });
