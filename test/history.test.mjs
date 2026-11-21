@@ -92,10 +92,11 @@ test('gallery layout controls show one layout at a time for the selected page', 
 
   assert.equal(await desktop.isVisible(), true);
   assert.equal(await mobile.isVisible(), false);
-  await firstPage.getByRole('radio', { name: 'Mobile' }).check();
+  await firstPage.getByText('Mobile', { exact: true }).click();
   assert.equal(await desktop.isVisible(), false);
   assert.equal(await mobile.isVisible(), true);
-  assert.equal(await page.locator('.page').nth(1).locator('input[value="desktop"]').isChecked(), true);
+  assert.equal(await firstPage.locator('input[value="mobile"]').isChecked(), true);
+  assert.equal(await firstPage.locator('input[value="desktop"]').isChecked(), false);
 });
 
 test('history handles missing pages and unavailable manifests', async (t) => {
