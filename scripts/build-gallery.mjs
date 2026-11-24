@@ -44,8 +44,8 @@ function renderPage(page, runs) {
       <header class="page-heading">
         <h2 id="page-${pageId}">${escape(page.title)}</h2>
         <div class="page-actions">
-          <a href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
           <a class="comparison-link" href="${escape(comparisonUrl)}" aria-label="Compare captures of ${escape(page.title)}">Compare captures</a>
+          <a href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
         </div>
       </header>
       <fieldset class="layout-picker">

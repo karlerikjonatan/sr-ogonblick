@@ -100,6 +100,8 @@ test('gallery orders newest runs first, preserves page order, escapes titles and
   assert.ok(html.indexOf('<h2 id="page-one">') < html.indexOf('<h2 id="page-two">'));
   assert.match(html, /href="#page-one">One &amp; two<\/a>/);
   assert.match(html, /href="#page-two">Two<\/a>/);
+  assert.ok(html.indexOf('class="comparison-link"') < html.indexOf('>Source page <span'));
+  assert.match(html, /href="compare\.html\?page=one&amp;layout=desktop"/);
   assert.match(html, /One &amp; two/);
   assert.match(html, /20 November 2026 at 09:00:00/);
   assert.doesNotMatch(html, /Stockholm time/);
