@@ -39,10 +39,14 @@ function renderPage(page, runs) {
   const pageId = escape(page.id);
   const desktopId = `layout-${pageId}-desktop`;
   const mobileId = `layout-${pageId}-mobile`;
+  const comparisonUrl = `compare.html?page=${encodeURIComponent(page.id)}&layout=desktop`;
   return `<article class="page" aria-labelledby="page-${pageId}">
       <header class="page-heading">
         <h2 id="page-${pageId}">${escape(page.title)}</h2>
-        <a href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
+        <div class="page-actions">
+          <a href="${escape(page.url)}">Source page <span aria-hidden="true">↗</span></a>
+          <a class="comparison-link" href="${escape(comparisonUrl)}" aria-label="Compare captures of ${escape(page.title)}">Compare captures</a>
+        </div>
       </header>
       <fieldset class="layout-picker">
         <legend class="visually-hidden">Capture layout</legend>
@@ -73,6 +77,7 @@ export function renderGallery(manifest) {
   <title>SR Ögonblick</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css">
+  <script src="gallery.js" defer></script>
 </head>
 <body>
   <a class="skip" href="#archive">Skip to archive</a>
