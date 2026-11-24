@@ -1,7 +1,7 @@
 const title = document.querySelector('#history-title');
 const status = document.querySelector('#history-status');
 const roll = document.querySelector('#history-roll');
-const stockholmTime = new Intl.DateTimeFormat('en-GB', {
+const stockholmTime = new Intl.DateTimeFormat('sv-SE', {
   dateStyle: 'medium', timeStyle: 'medium', timeZone: 'Europe/Stockholm',
 });
 
@@ -12,13 +12,13 @@ function element(tag, text) {
 }
 
 function time(value) {
-  const node = element('time', `${stockholmTime.format(new Date(value))} Stockholm time`);
+  const node = element('time', `${stockholmTime.format(new Date(value))} svensk tid`);
   node.dateTime = value;
   return node;
 }
 
 function captureFigure(capture, pageTitle) {
-  const label = capture.layout === 'desktop' ? 'Desktop' : 'Mobile';
+  const label = capture.layout === 'desktop' ? 'Dator' : 'Mobil';
   const figure = element('figure');
   const caption = element('figcaption');
   caption.append(element('strong', label), element('span', `${capture.width} × ${capture.height} px`));
@@ -26,20 +26,20 @@ function captureFigure(capture, pageTitle) {
   const link = element('a');
   link.className = `preview ${capture.layout}`;
   link.href = capture.image;
-  link.setAttribute('aria-label', `Open full ${label.toLowerCase()} screenshot of ${pageTitle}, ${stockholmTime.format(new Date(capture.capturedAt))} Stockholm time`);
+  link.setAttribute('aria-label', `Öppna hela skärmbilden av ${pageTitle} på ${label.toLowerCase()}, ${stockholmTime.format(new Date(capture.capturedAt))} svensk tid`);
   const thumbnail = element('img');
-  thumbnail.alt = `${pageTitle} on ${label.toLowerCase()}`;
+  thumbnail.alt = `${pageTitle} på ${label.toLowerCase()}`;
   thumbnail.width = capture.thumbnailWidth;
   thumbnail.height = capture.thumbnailHeight;
   thumbnail.loading = 'lazy';
   thumbnail.decoding = 'async';
   thumbnail.addEventListener('error', () => {
-    link.replaceChildren(element('span', 'Preview unavailable. Open full image.'));
+    link.replaceChildren(element('span', 'Förhandsvisningen är inte tillgänglig. Öppna hela bilden.'));
   }, { once: true });
   thumbnail.src = capture.thumbnail;
   link.append(thumbnail);
 
-  const captured = element('p', 'Captured ');
+  const captured = element('p', 'Tagen ');
   captured.className = 'capture-time';
   captured.append(time(capture.capturedAt));
   figure.append(caption, link, captured);
@@ -49,10 +49,10 @@ function captureFigure(capture, pageTitle) {
 async function showHistory() {
   const pageId = new URLSearchParams(location.search).get('page');
   if (!pageId) {
-    status.textContent = 'Choose a page from the archive to view its capture history.';
+    status.textContent = 'Välj en sida i arkivet för att visa dess skärmbildshistorik.';
     return;
   }
-  status.textContent = 'Loading capture history…';
+  status.textContent = 'Laddar skärmbildshistorik…';
   const response = await fetch('captures.json');
   if (!response.ok) throw new Error(`Capture manifest returned HTTP ${response.status}`);
   const manifest = await response.json();
@@ -65,7 +65,7 @@ async function showHistory() {
       return page ? [{ run, page }] : [];
     });
   if (entries.length === 0) {
-    status.textContent = 'No captures found for this page. Choose another page from the archive.';
+    status.textContent = 'Hittade inga skärmbilder för sidan. Välj en annan sida i arkivet.';
     return;
   }
 
@@ -82,16 +82,16 @@ async function showHistory() {
     }
     columns.append(column);
   }
-  title.textContent = `${entries[0].page.title} capture history`;
-  document.title = `${title.textContent} | SR page snapshots`;
-  status.textContent = `${entries.length} capture ${entries.length === 1 ? 'run' : 'runs'}. Select a preview to open the full image.`;
+  title.textContent = `Skärmbildshistorik: ${entries[0].page.title}`;
+  document.title = `${title.textContent} | SR Ögonblick`;
+  status.textContent = `${entries.length} ${entries.length === 1 ? 'körning' : 'körningar'}. Välj en förhandsvisning för att öppna hela bilden.`;
   roll.append(columns);
   roll.hidden = false;
 }
 
 showHistory().catch((error) => {
-  console.error('Could not load capture history:', error);
+  console.error('Kunde inte läsa in skärmbildshistoriken:', error);
   status.textContent = location.protocol === 'file:'
-    ? 'Serve the archive over HTTP to browse capture history locally.'
-    : 'Could not load capture history. Reload the page or return to the archive.';
+    ? 'Visa arkivet via HTTP för att bläddra i historiken lokalt.'
+    : 'Kunde inte läsa in skärmbildshistoriken. Ladda om sidan eller gå tillbaka till arkivet.';
 });

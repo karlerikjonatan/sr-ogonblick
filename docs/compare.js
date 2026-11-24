@@ -2,14 +2,14 @@ const title = document.querySelector('#comparison-title');
 const status = document.querySelector('#comparison-status');
 const roll = document.querySelector('#comparison-roll');
 const layoutPicker = document.querySelector('.comparison-layout-picker');
-const stockholmTime = new Intl.DateTimeFormat('en-GB', {
+const stockholmTime = new Intl.DateTimeFormat('sv-SE', {
   dateStyle: 'medium', timeStyle: 'medium', timeZone: 'Europe/Stockholm',
 });
 const params = new URLSearchParams(location.search);
 const pageId = params.get('page');
 const requestedLayout = params.get('layout');
 const selectedLayout = requestedLayout === 'mobile' ? 'mobile' : 'desktop';
-let pageTitle = 'Capture';
+let pageTitle = 'Skärmbild';
 let captures = [];
 layoutPicker.querySelector(`input[value="${selectedLayout}"]`).checked = true;
 
@@ -20,13 +20,13 @@ function element(tag, text) {
 }
 
 function time(value) {
-  const node = element('time', `${stockholmTime.format(new Date(value))} Stockholm time`);
+  const node = element('time', `${stockholmTime.format(new Date(value))} svensk tid`);
   node.dateTime = value;
   return node;
 }
 
 function captureItem(capture, layout) {
-  const label = layout === 'desktop' ? 'Desktop' : 'Mobile';
+  const label = layout === 'desktop' ? 'Dator' : 'Mobil';
   const figure = element('figure');
   figure.className = 'comparison-capture';
   const caption = element('figcaption');
@@ -35,9 +35,9 @@ function captureItem(capture, layout) {
   const link = element('a');
   link.className = 'comparison-image';
   link.href = capture.image;
-  link.setAttribute('aria-label', `Open full ${label.toLowerCase()} screenshot of ${pageTitle}, ${stockholmTime.format(new Date(capture.capturedAt))} Stockholm time`);
+  link.setAttribute('aria-label', `Öppna hela skärmbilden av ${pageTitle} på ${label.toLowerCase()}, ${stockholmTime.format(new Date(capture.capturedAt))} svensk tid`);
   const image = element('img');
-  image.alt = `${pageTitle} on ${label.toLowerCase()}, captured ${stockholmTime.format(new Date(capture.capturedAt))}`;
+  image.alt = `${pageTitle} på ${label.toLowerCase()}, tagen ${stockholmTime.format(new Date(capture.capturedAt))}`;
   image.width = capture.width;
   image.height = capture.height;
   image.loading = 'lazy';
@@ -45,8 +45,8 @@ function captureItem(capture, layout) {
   image.addEventListener('error', () => {
     link.removeAttribute('href');
     link.setAttribute('role', 'img');
-    link.setAttribute('aria-label', `Image unavailable for ${pageTitle}, ${label.toLowerCase()} capture`);
-    link.replaceChildren(element('span', 'Image unavailable.'));
+    link.setAttribute('aria-label', `Bilden är inte tillgänglig: ${pageTitle} på ${label.toLowerCase()}`);
+    link.replaceChildren(element('span', 'Bilden är inte tillgänglig.'));
   }, { once: true });
   image.src = capture.image;
   link.append(image);
@@ -58,14 +58,14 @@ function captureItem(capture, layout) {
 }
 
 function showLayout(layout) {
-  const label = layout === 'desktop' ? 'Desktop' : 'Mobile';
+  const label = layout === 'desktop' ? 'Dator' : 'Mobil';
   const selectedCaptures = captures.filter((capture) => capture.layout === layout);
   roll.replaceChildren();
-  roll.setAttribute('aria-label', `${label} captures`);
+  roll.setAttribute('aria-label', `Skärmbilder på ${label.toLowerCase()}`);
 
   if (selectedCaptures.length === 0) {
     roll.hidden = true;
-    status.textContent = `No ${label.toLowerCase()} captures found for this page. Choose another page from the archive.`;
+    status.textContent = `Hittade inga skärmbilder för ${label.toLowerCase()} på sidan. Välj en annan sida i arkivet.`;
     return;
   }
 
@@ -73,17 +73,18 @@ function showLayout(layout) {
   for (const capture of selectedCaptures) items.append(captureItem(capture, layout));
   roll.append(items);
   roll.hidden = false;
-  status.textContent = `${selectedCaptures.length} ${label.toLowerCase()} ${selectedCaptures.length === 1 ? 'capture' : 'captures'}. Select an image to open the original.`;
+  const countLabel = selectedCaptures.length === 1 ? 'skärmbild' : 'skärmbilder';
+  status.textContent = `${selectedCaptures.length} ${countLabel} på ${label.toLowerCase()}. Välj en bild för att öppna originalet.`;
 }
 
 async function showComparison() {
   if (!pageId) {
-    status.textContent = 'Choose a page from the archive to compare its captures.';
+    status.textContent = 'Välj en sida i arkivet för att jämföra dess skärmbilder.';
     layoutPicker.hidden = true;
     return;
   }
 
-  status.textContent = 'Loading captures…';
+  status.textContent = 'Laddar skärmbilder…';
   const response = await fetch('captures.json');
   if (!response.ok) throw new Error(`Capture manifest returned HTTP ${response.status}`);
   const manifest = await response.json();
@@ -92,14 +93,14 @@ async function showComparison() {
   const page = manifest.runs.find((run) => Array.isArray(run.pages)
     && run.pages.some((entry) => entry.id === pageId))?.pages.find((entry) => entry.id === pageId);
   if (!page) {
-    status.textContent = 'No captures found for this page. Choose another page from the archive.';
+    status.textContent = 'Hittade inga skärmbilder för sidan. Välj en annan sida i arkivet.';
     layoutPicker.hidden = true;
     return;
   }
 
   pageTitle = page.title;
-  title.textContent = `${pageTitle} captures`;
-  document.title = `${title.textContent} | SR page snapshots`;
+  title.textContent = `Skärmbilder: ${pageTitle}`;
+  document.title = `${title.textContent} | SR Ögonblick`;
   captures = manifest.runs.flatMap((run) => Array.isArray(run.captures) ? run.captures : [])
     .filter((capture) => capture.pageId === pageId)
     .sort((a, b) => b.capturedAt.localeCompare(a.capturedAt));
@@ -122,8 +123,8 @@ layoutPicker.addEventListener('change', (event) => {
 });
 
 showComparison().catch((error) => {
-  console.error('Could not load capture comparison:', error);
+  console.error('Kunde inte läsa in jämförelsen av skärmbilder:', error);
   status.textContent = location.protocol === 'file:'
-    ? 'Serve the archive over HTTP to compare captures locally.'
-    : 'Could not load captures. Reload the page or return to the archive.';
+    ? 'Visa arkivet via HTTP för att jämföra skärmbilder lokalt.'
+    : 'Kunde inte läsa in skärmbilderna. Ladda om sidan eller gå tillbaka till arkivet.';
 });

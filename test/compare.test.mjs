@@ -72,22 +72,22 @@ test('archive comparison link preserves the selected layout and opens that page'
   await page.goto(`${base}index.html`);
   const archivePage = page.locator('.page').first();
   await archivePage.locator('label[for="layout-poddar-mobile"]').click();
-  const comparisonLink = archivePage.getByRole('link', { name: 'Compare captures' });
+  const comparisonLink = archivePage.getByRole('link', { name: 'Jämför skärmbilder' });
   assert.equal(await comparisonLink.getAttribute('href'), 'compare.html?page=poddar&layout=mobile');
   await comparisonLink.click();
 
-  await page.getByText('2 mobile captures.', { exact: false }).waitFor();
+  await page.getByText('2 skärmbilder på mobil.', { exact: false }).waitFor();
   assert.equal(page.url(), `${base}compare.html?page=poddar&layout=mobile`);
   assert.equal(await page.locator('#comparison-mobile').isChecked(), true);
   assert.equal(await page.locator('#comparison-roll li').count(), 2);
-  assert.equal(await page.locator('#comparison-roll').getAttribute('aria-label'), 'Mobile captures');
+  assert.equal(await page.locator('#comparison-roll').getAttribute('aria-label'), 'Skärmbilder på mobil');
 });
 
 test('comparison sorts captures newest first and preserves full-image proportions at one shared height', async (t) => {
   const page = await openPage(t);
   await page.goto(`${base}compare.html?page=poddar&layout=desktop`);
   const images = page.locator('.comparison-image img');
-  await page.getByText('2 desktop captures.', { exact: false }).waitFor();
+  await page.getByText('2 skärmbilder på dator.', { exact: false }).waitFor();
   assert.deepEqual(await page.locator('.comparison-capture time').evaluateAll((nodes) =>
     nodes.map((node) => node.dateTime)),
   runs.flatMap((run) => run.captures)
@@ -118,7 +118,7 @@ test('comparison sorts captures newest first and preserves full-image proportion
   assert.equal(metrics[0].height, metrics[1].height);
   assert.ok(metrics.every((image) => Math.abs(image.ratio - image.naturalRatio) < 0.01));
   assert.ok(metrics.every((image) => image.source.startsWith('screenshots/')));
-  const roll = page.getByRole('list', { name: 'Desktop captures' });
+  const roll = page.getByRole('list', { name: 'Skärmbilder på dator' });
   assert.ok(await roll.evaluate((node) => node.scrollWidth > node.clientWidth));
   await roll.focus();
   await page.keyboard.press('ArrowRight');
@@ -128,11 +128,11 @@ test('comparison sorts captures newest first and preserves full-image proportion
 test('comparison layout control changes the selected captures and URL', async (t) => {
   const page = await openPage(t);
   await page.goto(`${base}compare.html?page=poddar&layout=desktop`);
-  await page.getByText('2 desktop captures.', { exact: false }).waitFor();
+  await page.getByText('2 skärmbilder på dator.', { exact: false }).waitFor();
 
   await page.locator('label[for="comparison-mobile"]').click();
   assert.equal(await page.locator('#comparison-desktop').isChecked(), false);
-  assert.equal(await page.locator('#comparison-roll').getAttribute('aria-label'), 'Mobile captures');
+  assert.equal(await page.locator('#comparison-roll').getAttribute('aria-label'), 'Skärmbilder på mobil');
   assert.equal(new URL(page.url()).searchParams.get('layout'), 'mobile');
   assert.deepEqual(await page.locator('.comparison-capture time').evaluateAll((nodes) =>
     nodes.map((node) => node.dateTime)),
@@ -145,13 +145,13 @@ test('comparison layout control changes the selected captures and URL', async (t
 test('comparison handles missing pages, empty captures, and broken images', async (t) => {
   const page = await openPage(t, { archive: { version: 1, runs: [] } });
   await page.goto(`${base}compare.html?page=missing`);
-  await page.getByText('No captures found for this page.', { exact: false }).waitFor();
+  await page.getByText('Hittade inga skärmbilder för sidan.', { exact: false }).waitFor();
   assert.equal(await page.locator('.comparison-roll').isHidden(), true);
   assert.equal(await page.locator('.comparison-layout-picker').isHidden(), true);
 
   const unavailable = await openPage(t, { imageFailure: true });
   await unavailable.goto(`${base}compare.html?page=poddar&layout=desktop`);
-  await unavailable.getByText('Image unavailable.').first().waitFor();
+  await unavailable.getByText('Bilden är inte tillgänglig.').first().waitFor();
   const fallback = unavailable.locator('.comparison-image').first();
   assert.equal(await fallback.getAttribute('href'), null);
   assert.equal(await fallback.getAttribute('role'), 'img');

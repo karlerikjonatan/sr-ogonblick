@@ -51,18 +51,18 @@ test('standalone history renders all dates and lazy previews linking to full ima
     if (request.url().startsWith(`${base}screenshots/`)) fullRequests.push(request.url());
   });
   await page.goto(`${base}history.html?page=poddar`);
-  await page.getByRole('heading', { name: 'Poddar capture history' }).waitFor();
+  await page.getByRole('heading', { name: 'Skärmbildshistorik: Poddar' }).waitFor();
   assert.equal(page.url(), `${base}history.html?page=poddar`);
   const expected = [...manifest.runs].sort((a, b) => b.startedAt.localeCompare(a.startedAt));
   const columns = page.locator('.history-run');
   assert.deepEqual(await columns.locator('h2 time').evaluateAll((nodes) => nodes.map((node) => node.dateTime)),
     expected.map((run) => run.startedAt));
   assert.deepEqual(await columns.locator('h2 time').allTextContents(), [
-    '2 Jul 2026, 00:30:00 Stockholm time',
-    '3 Jan 2026, 00:30:00 Stockholm time',
+    '2 juli 2026 00:30:00 svensk tid',
+    '3 jan. 2026 00:30:00 svensk tid',
   ]);
   assert.equal(await columns.first().locator('a.preview').first().getAttribute('aria-label'),
-    'Open full desktop screenshot of Poddar, 2 Jul 2026, 00:30:00 Stockholm time');
+    'Öppna hela skärmbilden av Poddar på dator, 2 juli 2026 00:30:00 svensk tid');
   for (const [index, run] of expected.entries()) {
     const previews = columns.nth(index).locator('a.preview');
     const captures = ['desktop', 'mobile'].map((layout) =>
@@ -74,7 +74,7 @@ test('standalone history renders all dates and lazy previews linking to full ima
     captures.map((capture) => [`${base}${capture.thumbnail}`, 'lazy']));
   }
   await columns.first().locator('img').first().evaluate((image) => image.decode());
-  const roll = page.getByRole('list', { name: 'Capture runs' });
+  const roll = page.getByRole('list', { name: 'Körningar' });
   assert.ok(await roll.evaluate((node) => node.scrollWidth > node.clientWidth));
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth === innerWidth));
   await roll.focus();
@@ -92,7 +92,7 @@ test('gallery layout controls show one layout at a time for the selected page', 
 
   assert.equal(await desktop.isVisible(), true);
   assert.equal(await mobile.isVisible(), false);
-  await firstPage.getByText('Mobile', { exact: true }).click();
+  await firstPage.getByText('Mobil', { exact: true }).click();
   assert.equal(await desktop.isVisible(), false);
   assert.equal(await mobile.isVisible(), true);
   assert.equal(await firstPage.locator('input[value="mobile"]').isChecked(), true);
@@ -102,11 +102,11 @@ test('gallery layout controls show one layout at a time for the selected page', 
 test('history handles missing pages and unavailable manifests', async (t) => {
   const page = await openPage(t, { width: 1440, archive: { version: 1, runs: [] } });
   await page.goto(`${base}history.html?page=missing`);
-  await page.getByText('No captures found for this page.', { exact: false }).waitFor();
-  assert.equal(await page.getByRole('list', { name: 'Capture runs' }).count(), 0);
+  await page.getByText('Hittade inga skärmbilder för sidan.', { exact: false }).waitFor();
+  assert.equal(await page.getByRole('list', { name: 'Körningar' }).count(), 0);
   await page.route(`${base}captures.json`, (route) => route.fulfill({ status: 503 }));
   await page.reload();
-  await page.getByText('Could not load capture history.', { exact: false }).waitFor();
-  await page.getByRole('link', { name: 'Back to archive', exact: false }).click();
+  await page.getByText('Kunde inte läsa in skärmbildshistoriken.', { exact: false }).waitFor();
+  await page.getByRole('link', { name: 'Tillbaka till arkivet', exact: false }).click();
   assert.equal(page.url(), `${base}index.html`);
 });
