@@ -30,6 +30,8 @@ npm run capture
 
 Use the **Desktop** and **Mobile** controls on each page to switch layouts. Earlier runs appear below the latest capture, newest first; select any preview to open the full image. The standalone history page remains available for existing links.
 
+Each archived page also has a **Compare captures** view. It shows original full-page images, newest first, in a horizontally scrollable row; choose one layout at a time. Images share the available height without cropping, and selecting one opens the original. Dates are shown in Stockholm time.
+
 ## Capture behavior and archive
 
 The tool accepts **all** cookies when a recognized consent prompt appears. It waits for the main content, a section heading, content links and images, disables animation, incrementally scrolls without clicking "show more", waits for on-page images and fonts, and requires stable page height before returning to the top. Images outside the horizontal viewport in carousels are not required because they are not rendered in the screenshot. Loading, consent, navigation and stabilization failures stop the run; timeouts and scroll counts are bounded.
