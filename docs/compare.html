@@ -6,32 +6,32 @@ STORY: Choose desktop or mobile, scan captures newest first, and open any origin
 FIRST VIEWPORT: Page title and return link above layout controls, capture metadata, then a horizontally scrollable image row.
 FORM: A focused comparison viewer within the existing static archive; the archive and history page remain unchanged.
 -->
-<html lang="en">
+<html lang="sv">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Compare full-page desktop or mobile captures from the SR Ögonblick archive.">
-  <title>Compare captures | SR page snapshots</title>
+  <meta name="description" content="Jämför helsidesskärmbilder från SR Ögonblicks arkiv.">
+  <title>Jämför skärmbilder | SR Ögonblick</title>
   <link rel="stylesheet" href="styles.css">
   <script src="compare.js" defer></script>
 </head>
 <body class="comparison-page">
   <header class="masthead">
-    <a class="history-nav" href="index.html">← Back to archive</a>
-    <h1 id="comparison-title">Compare captures</h1>
-    <p class="history-intro">Full-page captures, newest first. Select a layout, then scroll horizontally.</p>
+    <a class="history-nav" href="index.html">← Tillbaka till arkivet</a>
+    <h1 id="comparison-title">Jämför skärmbilder</h1>
+    <p class="history-intro">Helsidesskärmbilder, nyaste först. Välj visningsläge och bläddra sedan i sidled.</p>
   </header>
   <main class="comparison-main">
     <fieldset class="layout-picker comparison-layout-picker">
-      <legend class="visually-hidden">Capture layout</legend>
+      <legend class="visually-hidden">Visningsläge</legend>
       <input id="comparison-desktop" type="radio" name="comparison-layout" value="desktop" checked>
-      <label for="comparison-desktop">Desktop</label>
+      <label for="comparison-desktop">Dator</label>
       <input id="comparison-mobile" type="radio" name="comparison-layout" value="mobile">
-      <label for="comparison-mobile">Mobile</label>
+      <label for="comparison-mobile">Mobil</label>
     </fieldset>
-    <p id="comparison-status" class="history-status" role="status">Loading captures…</p>
-    <ul class="comparison-roll" id="comparison-roll" role="list" aria-label="Desktop captures" tabindex="0" hidden></ul>
+    <p id="comparison-status" class="history-status" role="status">Laddar skärmbilder…</p>
+    <ul class="comparison-roll" id="comparison-roll" role="list" aria-label="Skärmbilder på dator" tabindex="0" hidden></ul>
   </main>
-  <footer>Select an image to open the original capture. All times are shown in Stockholm time.</footer>
+  <footer>Välj en bild för att öppna originalet. Alla tider anges i svensk tid.</footer>
 </body>
 </html>

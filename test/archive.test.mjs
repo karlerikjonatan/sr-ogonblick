@@ -100,18 +100,17 @@ test('gallery orders newest runs first, preserves page order, escapes titles and
   assert.ok(html.indexOf('<h2 id="page-one">') < html.indexOf('<h2 id="page-two">'));
   assert.match(html, /href="#page-one">One &amp; two<\/a>/);
   assert.match(html, /href="#page-two">Two<\/a>/);
-  assert.ok(html.indexOf('class="comparison-link"') < html.indexOf('>Source page <span'));
+  assert.ok(html.indexOf('class="comparison-link"') < html.indexOf('>Källsida <span'));
   assert.match(html, /href="compare\.html\?page=one&amp;layout=desktop"/);
   assert.match(html, /One &amp; two/);
-  assert.match(html, /20 November 2026 at 09:00:00/);
-  assert.doesNotMatch(html, /Stockholm time/);
-  assert.match(html, /<\/nav>\s+<p class="archive-summary">2 runs<\/p>/);
+  assert.match(html, /20 november 2026 kl\. 09:00:00/);
+  assert.match(html, /<\/nav>\s+<p class="archive-summary">2 körningar<\/p>/);
   assert.match(html, /datetime="2026-11-20T08:00:00\.000Z"/);
   assert.doesNotMatch(html, /\bUTC\b/);
   assert.match(html, /name="layout-one" value="desktop" checked/);
   assert.match(html, /name="layout-one" value="mobile"/);
-  assert.match(html, /class="capture-view desktop" aria-label="Desktop captures"/);
-  assert.match(html, /Earlier desktop captures/);
+  assert.match(html, /class="capture-view desktop" aria-label="Skärmbilder på dator"/);
+  assert.match(html, /Tidigare skärmbilder på dator/);
   for (const capture of later.captures) {
     assert.ok(html.includes(`href="${capture.image}"`));
     assert.ok(html.includes(`src="${capture.thumbnail}"`));
@@ -128,9 +127,8 @@ test('gallery displays winter and summer Stockholm dates while retaining UTC dat
   const summer = await stageRun({ root, pages, startedAt: summerAt, render: renderGallery,
     capture: async (options) => ({ ...await fakeCapture(options), capturedAt: summerAt }) });
   const html = renderGallery({ version: 1, runs: [winter, summer] });
-  assert.match(html, /2 July 2026 at 00:30:00/);
-  assert.match(html, /3 January 2026 at 00:30:00/);
-  assert.doesNotMatch(html, /Stockholm time/);
+  assert.match(html, /2 juli 2026 kl\. 00:30:00/);
+  assert.match(html, /3 januari 2026 kl\. 00:30:00/);
   assert.match(html, /datetime="2026-07-01T22:30:00\.000Z"/);
   assert.match(html, /datetime="2026-01-02T23:30:00\.000Z"/);
 });
