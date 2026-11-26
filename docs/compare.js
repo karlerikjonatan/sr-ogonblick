@@ -85,7 +85,7 @@ async function showComparison() {
   }
 
   status.textContent = 'Laddar skärmbilder…';
-  const response = await fetch('captures.json');
+  const response = await fetch('captures.json', { cache: 'no-store' });
   if (!response.ok) throw new Error(`Capture manifest returned HTTP ${response.status}`);
   const manifest = await response.json();
   if (manifest.version !== 1 || !Array.isArray(manifest.runs)) throw new Error('Invalid capture manifest');
