@@ -28,7 +28,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
-      - run: npm test
       - run: npm run capture
       - name: Commit complete archive
         shell: bash

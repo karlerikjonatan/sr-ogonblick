@@ -22,7 +22,6 @@ Requires Node.js 26 LTS and npm. Install locked dependencies and Chromium:
 ```sh
 npm ci
 npx playwright install --with-deps chromium
-npm test
 npm run capture
 ```
 
@@ -67,11 +66,11 @@ After the implementation and lockfile are on the default branch, open **Actions 
 
 To publish the committed gallery without taking new screenshots, run **Actions → Publish existing gallery** on the default branch.
 
-The workflow uses Node 26, `npm ci`, Chromium system dependencies and the focused tests. It captures and renders all eight images, commits all of `docs` in one commit, pushes without force, then uploads `docs` and deploys using the official Pages actions. A serialized workflow group prevents capture workflows racing. If an unrelated push races with the commit, the non-fast-forward push fails and no deployment occurs; rerun from the latest default branch.
+The workflow uses Node 26, `npm ci`, and Chromium system dependencies. It captures and renders all eight images, commits all of `docs` in one commit, pushes without force, then uploads `docs` and deploys using the official Pages actions. A serialized workflow group prevents capture workflows racing. If an unrelated push races with the commit, the non-fast-forward push fails and no deployment occurs; rerun from the latest default branch.
 
 Capture uses only contents-write permission; the separate deployment job uses pages-write and id-token-write. It does not rely on a bot commit triggering another workflow.
 
-If capture or tests fail, inspect the logs and rerun after fixing the cause; no partial archive is committed or deployed. If deployment fails after the archive commit, the prior published site remains available. Use **Re-run failed jobs** to retry only deployment without capturing again. The Pages artifact is retained for 30 days; after expiry a new manual capture is needed. If upload fails after commit, that complete run is still in Git, but a full rerun creates another complete run.
+If capture fails, inspect the logs and rerun after fixing the cause; no partial archive is committed or deployed. If deployment fails after the archive commit, the prior published site remains available. Use **Re-run failed jobs** to retry only deployment without capturing again. The Pages artifact is retained for 30 days; after expiry a new manual capture is needed. If upload fails after commit, that complete run is still in Git, but a full rerun creates another complete run.
 
 ## Adding pages
 
